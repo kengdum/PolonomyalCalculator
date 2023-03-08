@@ -24,5 +24,6 @@ public class App
         //System.out.println(polinom);
 
         System.out.println(PolinomModel.addition(polinom, polinom1));
+        System.out.println(PolinomModel.substraction(polinom,polinom1));
     }
 }
