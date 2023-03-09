@@ -1,5 +1,10 @@
 package org.example;
-public class App 
+
+import Model.Monom;
+import Model.Operatie;
+import Model.PolinomModel;
+
+public class App
 {
     public static void main( String[] args )
     {
@@ -21,9 +26,14 @@ public class App
         polinom1.addMonomToPolinom(var4);
         polinom1.addMonomToPolinom(var5);
         polinom1.addMonomToPolinom(var6);
-        //System.out.println(polinom);
 
-        System.out.println(PolinomModel.addition(polinom, polinom1));
-        System.out.println(PolinomModel.substraction(polinom,polinom1));
+        PolinomModel polinom3 = new PolinomModel(polinom1);
+
+        System.out.println(polinom3);
+        System.out.println(polinom1);
+
+        System.out.println(Operatie.addition(polinom1,polinom3));
+        System.out.println(Operatie.substraction(polinom1,polinom3));
+
     }
 }
