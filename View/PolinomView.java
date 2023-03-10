@@ -1,4 +1,7 @@
 package View;
+import Controller.PolinomController;
+import Model.PolinomModel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -11,7 +14,7 @@ public class PolinomView extends JFrame implements ActionListener {
     private static final String[] OPERATORS = {"+", "-", "*", "/"};
 
     public PolinomView() {
-        setTitle("Arithmetic Calculator");
+        setTitle("Calculator Polinoame");
         setSize(600, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -52,23 +55,23 @@ public class PolinomView extends JFrame implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        double input1 = Double.parseDouble(inputField1.getText());
-        double input2 = Double.parseDouble(inputField2.getText());
+        String input1 = inputField1.getText();
+        String input2 = inputField2.getText();
         String operator = (String) operatorComboBox.getSelectedItem();
 
         // Perform the selected arithmetic operation and display the result
         switch (operator) {
             case "+":
-                resultField.setText(Double.toString(input1 + input2));
+                PolinomController.validateInput(input1);
                 break;
             case "-":
-                resultField.setText(Double.toString(input1 - input2));
+                //resultField.setText(Double.toString(input1 - input2));
                 break;
             case "*":
-                resultField.setText(Double.toString(input1 * input2));
+               // resultField.setText(Double.toString(input1 * input2));
                 break;
             case "/":
-                resultField.setText(Double.toString(input1 / input2));
+                //resultField.setText(Double.toString(input1 / input2));
                 break;
         }
     }
