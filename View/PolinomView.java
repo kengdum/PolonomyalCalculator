@@ -1,5 +1,6 @@
 package View;
 import Controller.PolinomController;
+import Exceptions.InvalidInputException;
 import Model.PolinomModel;
 
 import javax.swing.*;
@@ -62,7 +63,12 @@ public class PolinomView extends JFrame implements ActionListener {
         // Perform the selected arithmetic operation and display the result
         switch (operator) {
             case "+":
-                PolinomController.validateInput(input1);
+                try {
+                    boolean b = PolinomController.validateInput(input1);
+                    System.out.println(b);
+                } catch (InvalidInputException err) {
+                   System.out.println(err.getMessage());
+                }
                 break;
             case "-":
                 //resultField.setText(Double.toString(input1 - input2));

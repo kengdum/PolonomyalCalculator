@@ -1,10 +1,12 @@
 package Controller;
 
+import Exceptions.InvalidInputException;
 import Model.Monom;
 import Model.PolinomModel;
 import View.PolinomView;
 
 import java.sql.SQLOutput;
+import java.util.IllegalFormatException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,22 +26,25 @@ public class PolinomController {
     public PolinomView getView() {
         return view;
     }
-    public static void validateInput(String polynomial) {
-        String regex = "([-+]?\\d*x\\^(\\d+))|([-+]?\\d*x)|([-+]?\\d+)";
+    public static boolean validateInput(String polynomial) throws InvalidInputException {
+        String regex = "([+-]?\\d*x\\^\\d+)\\b|([+-]?\\d*x)\\b|([-+]?\\d+)|(\\bx{2,}\\b)";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(polynomial);
         String verificare = new String("");
         while (matcher.find()) {
+            if(matcher.group().equals(matcher.group(4)))
+                throw new InvalidInputException("Invalid input");
             String term = matcher.group();
+            System.out.println(term);
+
             term = term.replaceAll("\\s+", "");
             verificare = verificare + term;
-            System.out.println(term);
         }
         polynomial = polynomial.replaceAll("\\s+", "");
-        System.out.println(verificare);
-        System.out.println(polynomial);
-        if (!verificare.equals(polynomial)) System.out.println("Input invalid");
+        if (!verificare.equals(polynomial)) {
+            throw  new InvalidInputException("Inputul introdus de utlizator este invalid");
+        }
+        return true;
     }
-
 
 }
