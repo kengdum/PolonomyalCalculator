@@ -64,8 +64,9 @@ public class PolinomView extends JFrame implements ActionListener {
         switch (operator) {
             case "+":
                 try {
-                    boolean b = PolinomController.validateInput(input1);
-                    System.out.println(b);
+                    PolinomModel polinom = new PolinomModel();
+                    polinom = PolinomController.validateInput(input1);
+                    System.out.println(polinom);
                 } catch (InvalidInputException err) {
                    System.out.println(err.getMessage());
                 }
