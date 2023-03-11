@@ -42,6 +42,21 @@ public class Operatie {
             }
         }
         return polinomScadere;
+
+    }
+    public static Polinom derivation(Polinom polinom) {
+        Polinom polinomDerivare = new Polinom();
+
+        for(Map.Entry<Integer,Monom> entry : polinom.getPolinom().entrySet()) {
+            if(entry.getValue().getPower() == 1) {
+                polinomDerivare.addMonomToPolinom(new Monom(entry.getValue().getCoeficient(), 0 , "x"));
+            }
+            else if (entry.getValue().getPower() != 0) {
+                polinomDerivare.addMonomToPolinom(new Monom(entry.getValue().getCoeficient() * entry.getValue().getPower(), entry.getValue().getPower() -1, "x"));
+            }
+        }
+
+        return polinomDerivare;
     }
 
 }

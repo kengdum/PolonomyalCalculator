@@ -102,7 +102,12 @@ public class PolinomController {
         StringBuilder buffer = new StringBuilder();
         for (Map.Entry<Integer, Monom> entry : polinom.getPolinom().entrySet()) {
             if (entry.getValue().getCoeficient() > 1) {
-                buffer.append("+").append(entry.getValue().getCoeficient()).append(entry.getValue().getVariable());
+                if(entry.getValue().getPower() > 0) {
+                    buffer.append("+").append(entry.getValue().getCoeficient()).append(entry.getValue().getVariable());
+                }
+                else {
+                    buffer.append("+").append(entry.getValue().getCoeficient());
+                }
             } else if (entry.getValue().getCoeficient() < 1) {
                 if (entry.getValue().getCoeficient() != -1) {
                     buffer.append(entry.getValue().getCoeficient()).append(entry.getValue().getVariable());

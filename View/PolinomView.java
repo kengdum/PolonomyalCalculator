@@ -13,7 +13,7 @@ public class PolinomView extends JFrame implements ActionListener {
     private JComboBox operatorComboBox;
     private JButton calculateButton;
 
-    private static final String[] OPERATORS = {"+", "-", "*", "/"};
+    private static final String[] OPERATORS = {"+", "-", "*", "/", "Derivation"};
 
     public PolinomView() {
         setTitle("Calculator Polinoame");
@@ -90,6 +90,15 @@ public class PolinomView extends JFrame implements ActionListener {
                 break;
             case "/":
                 //resultField.setText(Double.toString(input1 / input2));
+                break;
+            case "Derivation":
+                try {
+                    Polinom polinom1 = new Polinom();
+                    polinom1 = PolinomController.validateInput(input1);
+                    resultField.setText(PolinomController.parsePolinomToString(Operatie.derivation(polinom1)));
+                } catch (InvalidInputException err) {
+                    System.out.println(err.getMessage());
+                }
                 break;
         }
     }
