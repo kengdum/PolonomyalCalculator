@@ -5,6 +5,7 @@ import Model.Monom;
 import Model.PolinomModel;
 import View.PolinomView;
 
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,12 +34,16 @@ public class PolinomController {
         String verificare = new String("");
         while (matcher.find()) {
             if(matcher.group().equals(matcher.group(4)))
-                throw new InvalidInputException("Invalid input");
+                throw new InvalidInputException("Inputul introdus de utilizator este invalid");
             String term = matcher.group();
             System.out.println(term);
 
             term = term.replaceAll("\\s+", "");
-            polinom.addMonomToPolinom(parseStringToMonom(term,matcher));
+            try {
+                polinom.addMonomToPolinom(parseStringToMonom(term, matcher));
+            }catch (InvalidInputException err) {
+                System.out.println(err.getMessage());
+            }
             verificare = verificare + term;
         }
         System.out.println(polynomial);
@@ -48,9 +53,12 @@ public class PolinomController {
         }
         return polinom;
     }
-    private static Monom parseStringToMonom (String polynomial, Matcher matcher) {
+    private static Monom parseStringToMonom (String polynomial, Matcher matcher) throws InvalidInputException {
         int coeficient = 0;
         int power = 0;
+        if (polynomial.equals("x")) {
+            return  new Monom(1,1,"x");
+        }
         if (polynomial.equals(matcher.group(1))) {
             String[] parts = polynomial.split("x\\^");
             if (parts.length == 2) {
@@ -82,9 +90,36 @@ public class PolinomController {
                 return new Monom(coeficient, power, "x");
             }
         }
-        coeficient = Integer.parseInt(polynomial);
-        power = 0;
-        return new Monom(coeficient, power, "x");
+        else {
+            coeficient = Integer.parseInt(polynomial);
+            power = 0;
+            return new Monom(coeficient, power, "x");
+        }
+       throw new InvalidInputException("Eroare cand se incearca convertirea din string in monom");
+    }
+    public static String parsePolinomToString(PolinomModel polinom) {
+        StringBuilder buffer = new StringBuilder();
+        for (Map.Entry<Integer, Monom> entry : polinom.getPolinom().entrySet()) {
+            if(entry.getValue().getCoeficient() > 1){
+                buffer.append("+").append(entry.getValue().getCoeficient()).append(entry.getValue().getVariable());
+            }
+            else if (entry.getValue().getCoeficient() < 1) {
+                if(entry.getValue().getCoeficient() != -1){
+                buffer.append(entry.getValue().getCoeficient()).append(entry.getValue().getVariable());
+                }
+                else{
+                    buffer.append("-").append(entry.getValue().getVariable());
+                }
+
+            }
+            else if (entry.getValue().getCoeficient() == 1 && entry.getValue().getPower() > 0) {
+                buffer.append("+").append(entry.getValue().getVariable());
+            }
+            if(entry.getValue().getPower() > 1) {
+                buffer.append("^").append(entry.getValue().getPower());
+            }
+        }
+        return buffer.toString();
     }
 
 }
