@@ -3,8 +3,8 @@ package Model;
 import java.util.Map;
 
 public class Operatie {
-    public static PolinomModel addition(PolinomModel polinom1, PolinomModel polinom2) {
-        PolinomModel polinomAdunare = new PolinomModel(polinom1);
+    public static Polinom addition(Polinom polinom1, Polinom polinom2) {
+        Polinom polinomAdunare = new Polinom(polinom1);
 
         for (Map.Entry<Integer, Monom> entry : polinom2.getPolinom().entrySet()) {
             if (polinom1.getPolinom().containsKey(entry.getKey())) {
@@ -24,8 +24,8 @@ public class Operatie {
         return polinomAdunare;
     }
 
-    public static PolinomModel substraction(PolinomModel polinom1, PolinomModel polinom2) {
-        PolinomModel polinomScadere = new PolinomModel(polinom1);
+    public static Polinom substraction(Polinom polinom1, Polinom polinom2) {
+        Polinom polinomScadere = new Polinom(polinom1);
 
         for (Map.Entry<Integer, Monom> entry : polinom2.getPolinom().entrySet()) {
             if (polinom1.getPolinom().containsKey(entry.getKey())) {

@@ -2,7 +2,7 @@ package Controller;
 
 import Exceptions.InvalidInputException;
 import Model.Monom;
-import Model.PolinomModel;
+import Model.Polinom;
 import View.PolinomView;
 
 import java.util.Map;
@@ -11,29 +11,30 @@ import java.util.regex.Pattern;
 
 public class PolinomController {
     private PolinomView view;
-    private PolinomModel model;
+    private Polinom model;
 
-    public PolinomController(PolinomView view, PolinomModel model) {
+    public PolinomController(PolinomView view, Polinom model) {
         this.view = view;
         this.model = model;
     }
 
-    public PolinomModel getModel() {
+    public Polinom getModel() {
         return model;
     }
 
     public PolinomView getView() {
         return view;
     }
-    public static PolinomModel validateInput(String polynomial) throws InvalidInputException {
+
+    public static Polinom validateInput(String polynomial) throws InvalidInputException {
         String regex = "([+-]?\\d*x\\^\\d+)\\b|([+-]?\\d*x)\\b|([-+]?\\d+)|(\\bx{2,}\\b)";
         polynomial = polynomial.replaceAll("\\s+", "");
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(polynomial);
-        PolinomModel polinom = new PolinomModel();
-        String verificare = new String("");
+        Polinom polinom = new Polinom();
+        String verificare = "";
         while (matcher.find()) {
-            if(matcher.group().equals(matcher.group(4)))
+            if (matcher.group().equals(matcher.group(4)))
                 throw new InvalidInputException("Inputul introdus de utilizator este invalid");
             String term = matcher.group();
             System.out.println(term);
@@ -41,7 +42,7 @@ public class PolinomController {
             term = term.replaceAll("\\s+", "");
             try {
                 polinom.addMonomToPolinom(parseStringToMonom(term, matcher));
-            }catch (InvalidInputException err) {
+            } catch (InvalidInputException err) {
                 System.out.println(err.getMessage());
             }
             verificare = verificare + term;
@@ -49,15 +50,16 @@ public class PolinomController {
         System.out.println(polynomial);
         System.out.println(verificare);
         if (!verificare.equals(polynomial)) {
-            throw  new InvalidInputException("Inputul introdus de utlizator este invalid");
+            throw new InvalidInputException("Inputul introdus de utlizator este invalid");
         }
         return polinom;
     }
-    private static Monom parseStringToMonom (String polynomial, Matcher matcher) throws InvalidInputException {
+
+    private static Monom parseStringToMonom(String polynomial, Matcher matcher) throws InvalidInputException {
         int coeficient = 0;
         int power = 0;
         if (polynomial.equals("x")) {
-            return  new Monom(1,1,"x");
+            return new Monom(1, 1, "x");
         }
         if (polynomial.equals(matcher.group(1))) {
             String[] parts = polynomial.split("x\\^");
@@ -89,33 +91,29 @@ public class PolinomController {
                 }
                 return new Monom(coeficient, power, "x");
             }
-        }
-        else {
+        } else {
             coeficient = Integer.parseInt(polynomial);
-            power = 0;
             return new Monom(coeficient, power, "x");
         }
-       throw new InvalidInputException("Eroare cand se incearca convertirea din string in monom");
+        throw new InvalidInputException("Eroare cand se incearca convertirea din string in monom");
     }
-    public static String parsePolinomToString(PolinomModel polinom) {
+
+    public static String parsePolinomToString(Polinom polinom) {
         StringBuilder buffer = new StringBuilder();
         for (Map.Entry<Integer, Monom> entry : polinom.getPolinom().entrySet()) {
-            if(entry.getValue().getCoeficient() > 1){
+            if (entry.getValue().getCoeficient() > 1) {
                 buffer.append("+").append(entry.getValue().getCoeficient()).append(entry.getValue().getVariable());
-            }
-            else if (entry.getValue().getCoeficient() < 1) {
-                if(entry.getValue().getCoeficient() != -1){
-                buffer.append(entry.getValue().getCoeficient()).append(entry.getValue().getVariable());
-                }
-                else{
+            } else if (entry.getValue().getCoeficient() < 1) {
+                if (entry.getValue().getCoeficient() != -1) {
+                    buffer.append(entry.getValue().getCoeficient()).append(entry.getValue().getVariable());
+                } else {
                     buffer.append("-").append(entry.getValue().getVariable());
                 }
 
-            }
-            else if (entry.getValue().getCoeficient() == 1 && entry.getValue().getPower() > 0) {
+            } else if (entry.getValue().getCoeficient() == 1 && entry.getValue().getPower() > 0) {
                 buffer.append("+").append(entry.getValue().getVariable());
             }
-            if(entry.getValue().getPower() > 1) {
+            if (entry.getValue().getPower() > 1) {
                 buffer.append("^").append(entry.getValue().getPower());
             }
         }

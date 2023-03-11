@@ -2,7 +2,7 @@ package View;
 import Controller.PolinomController;
 import Exceptions.InvalidInputException;
 import Model.Operatie;
-import Model.PolinomModel;
+import Model.Polinom;
 
 import javax.swing.*;
 import java.awt.*;
@@ -65,8 +65,8 @@ public class PolinomView extends JFrame implements ActionListener {
         switch (operator) {
             case "+":
                 try {
-                    PolinomModel polinom1 = new PolinomModel();
-                    PolinomModel polinom2 = new PolinomModel();
+                    Polinom polinom1 = new Polinom();
+                    Polinom polinom2 = new Polinom();
                     polinom1 = PolinomController.validateInput(input1);
                     polinom2 = PolinomController.validateInput(input2);
                     resultField.setText(PolinomController.parsePolinomToString(Operatie.addition(polinom1,polinom2)));
@@ -75,7 +75,15 @@ public class PolinomView extends JFrame implements ActionListener {
                 }
                 break;
             case "-":
-                //resultField.setText(Double.toString(input1 - input2));
+                try {
+                    Polinom polinom1 = new Polinom();
+                    Polinom polinom2 = new Polinom();
+                    polinom1 = PolinomController.validateInput(input1);
+                    polinom2 = PolinomController.validateInput(input2);
+                    resultField.setText(PolinomController.parsePolinomToString(Operatie.substraction(polinom1,polinom2)));
+                } catch (InvalidInputException err) {
+                    System.out.println(err.getMessage());
+                }
                 break;
             case "*":
                // resultField.setText(Double.toString(input1 * input2));
