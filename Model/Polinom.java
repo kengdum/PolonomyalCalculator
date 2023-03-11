@@ -3,15 +3,15 @@ package Model;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class PolinomModel {
+public class Polinom {
 
     private TreeMap<Integer, Monom> polinom;
 
-    public PolinomModel() {
+    public Polinom() {
         polinom = new TreeMap<>();
     }
 
-    public PolinomModel(PolinomModel polinom1) {
+    public Polinom(Polinom polinom1) {
         polinom = new TreeMap<>();
         for (Map.Entry<Integer, Monom> entry : polinom1.getPolinom().entrySet()) {
             Monom monom = new Monom(entry.getValue().getCoeficient(), entry.getValue().getPower(), entry.getValue().getVariable());
