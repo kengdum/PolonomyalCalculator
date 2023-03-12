@@ -44,6 +44,17 @@ public class Operatie {
         return polinomScadere;
 
     }
+    public static Polinom multiplication(Polinom polinom1, Polinom polinom2) {
+        Polinom polinomMultiplication = new Polinom();
+        for (Map.Entry<Integer, Monom> entry1 : polinom1.getPolinom().entrySet()) {
+            for (Map.Entry<Integer, Monom> entry2 : polinom2.getPolinom().entrySet()) {
+                int coeficient = entry1.getValue().getCoeficient() * entry2.getValue().getCoeficient();
+                int putere = entry1.getValue().getPower() + entry2.getValue().getPower();
+                polinomMultiplication.addMonomToPolinom(new Monom(coeficient, putere, "x"));
+            }
+        }
+        return polinomMultiplication;
+    }
     public static Polinom derivation(Polinom polinom) {
         Polinom polinomDerivare = new Polinom();
 

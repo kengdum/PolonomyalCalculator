@@ -86,7 +86,15 @@ public class PolinomView extends JFrame implements ActionListener {
                 }
                 break;
             case "*":
-               // resultField.setText(Double.toString(input1 * input2));
+                try {
+                    Polinom polinom1 = new Polinom();
+                    Polinom polinom2 = new Polinom();
+                    polinom1 = PolinomController.validateInput(input1);
+                    polinom2 = PolinomController.validateInput(input2);
+                    resultField.setText(PolinomController.parsePolinomToString(Operatie.multiplication(polinom1,polinom2)));
+                }catch (InvalidInputException err){
+                    System.out.println(err.getMessage());
+                }
                 break;
             case "/":
                 //resultField.setText(Double.toString(input1 / input2));

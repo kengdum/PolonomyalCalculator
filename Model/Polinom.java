@@ -21,7 +21,13 @@ public class Polinom {
     }
 
     public void addMonomToPolinom(Monom monom) {
-        polinom.put(monom.getPower(), monom);
+        if(!polinom.containsKey(monom.getPower())) {
+            polinom.put(monom.getPower(), monom);
+        }
+        else {
+            Monom monom1 = polinom.get(monom.getPower());
+            polinom.put(monom.getPower(), new Monom(monom.getCoeficient() + monom1.getCoeficient(),monom.getPower(),"x"));
+        }
     }
 
     public TreeMap<Integer, Monom> getPolinom() {
