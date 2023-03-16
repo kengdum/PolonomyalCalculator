@@ -58,8 +58,15 @@ public class PolinomController {
     private static Monom parseStringToMonom(String polynomial, Matcher matcher) throws InvalidInputException {
         int coeficient = 0;
         int power = 0;
-        if (polynomial.equals("x")) {
+        if(polynomial.equals("1") || polynomial.equals("+1"))
+            return  new Monom(1,0,"x");
+        if(polynomial.equals("-1"))
+            return  new Monom(-1, 0, "x");
+        if (polynomial.equals("+x") || polynomial.equals("x")) {
             return new Monom(1, 1, "x");
+        }
+        else if(polynomial.equals("-x")) {
+            return  new Monom(-1,1,"x");
         }
         if (polynomial.equals(matcher.group(1))) {
             String[] parts = polynomial.split("x\\^");
@@ -79,16 +86,8 @@ public class PolinomController {
         } else if (polynomial.equals(matcher.group(2))) {
             String[] parts = polynomial.split("x");
             if (parts.length == 1) {
-                if (parts[0].equals("x")) {
-                    coeficient = 1;
-                    power = 1;
-                } else if (parts[0].equals("-x")) {
-                    coeficient = -1;
-                    power = 1;
-                } else {
-                    coeficient = Integer.parseInt(parts[0]);
-                    power = 1;
-                }
+                coeficient = Integer.parseInt(parts[0]);
+                power = 1;
                 return new Monom(coeficient, power, "x");
             }
         } else {
@@ -100,7 +99,17 @@ public class PolinomController {
 
     public static String parsePolinomToString(Polinom polinom) {
         StringBuilder buffer = new StringBuilder();
+        if(polinom.getPolinom().isEmpty()){
+            buffer.append("0");
+            return buffer.toString();
+        }
         for (Map.Entry<Integer, Monom> entry : polinom.getPolinom().entrySet()) {
+            if(entry.getValue().getCoeficient() == 1 && entry.getValue().getPower() == 0){
+                buffer.append("+1");
+            }
+            if(entry.getValue().getCoeficient() == -1 && entry.getValue().getPower() == 0){
+                buffer.append("-1");
+            }
             if (entry.getValue().getCoeficient() > 1) {
                 if(entry.getValue().getPower() > 0) {
                     buffer.append("+").append(entry.getValue().getCoeficient()).append(entry.getValue().getVariable());
@@ -112,7 +121,10 @@ public class PolinomController {
                 if (entry.getValue().getCoeficient() != -1) {
                     buffer.append(entry.getValue().getCoeficient()).append(entry.getValue().getVariable());
                 } else {
-                    buffer.append("-").append(entry.getValue().getVariable());
+                    if(entry.getValue().getPower() > 1){
+                        buffer.append("-").append(entry.getValue().getVariable());
+                    }
+
                 }
 
             } else if (entry.getValue().getCoeficient() == 1 && entry.getValue().getPower() > 0) {

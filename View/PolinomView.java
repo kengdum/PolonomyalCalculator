@@ -24,6 +24,8 @@ public class PolinomView extends JFrame implements ActionListener {
         // Create the input labels
         inputLabel1 = new JLabel("Input 1:");
         inputLabel2 = new JLabel("Input 2:");
+        inputLabel1.setHorizontalAlignment(JLabel.CENTER);
+        inputLabel2.setHorizontalAlignment(JLabel.CENTER);
 
         // Create the input fields
         inputField1 = new JTextField(5);
@@ -32,9 +34,11 @@ public class PolinomView extends JFrame implements ActionListener {
         // Create the operator label and combo box
         operatorLabel = new JLabel("Operatie:");
         operatorComboBox = new JComboBox(OPERATORS);
+        operatorLabel.setHorizontalAlignment(JLabel.CENTER);
 
         // Create the result label and field
         resultLabel = new JLabel("Rezultat:");
+        resultLabel.setHorizontalAlignment(JLabel.CENTER);
         resultField = new JTextField(10);
         resultField.setEditable(false);
 
@@ -69,6 +73,7 @@ public class PolinomView extends JFrame implements ActionListener {
                     Polinom polinom2 = new Polinom();
                     polinom1 = PolinomController.validateInput(input1);
                     polinom2 = PolinomController.validateInput(input2);
+                    System.out.println(Operatie.addition(polinom1,polinom2));
                     resultField.setText(PolinomController.parsePolinomToString(Operatie.addition(polinom1,polinom2)));
                 } catch (InvalidInputException err) {
                    System.out.println(err.getMessage());
@@ -94,6 +99,7 @@ public class PolinomView extends JFrame implements ActionListener {
                     resultField.setText(PolinomController.parsePolinomToString(Operatie.multiplication(polinom1,polinom2)));
                 }catch (InvalidInputException err){
                     System.out.println(err.getMessage());
+
                 }
                 break;
             case "/":

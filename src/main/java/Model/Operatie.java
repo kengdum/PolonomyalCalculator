@@ -21,6 +21,7 @@ public class Operatie {
                 polinomAdunare.addMonomToPolinom(monom);
             }
         }
+        polinomAdunare.checkZeros();
         return polinomAdunare;
     }
 
@@ -41,6 +42,7 @@ public class Operatie {
                 polinomScadere.addMonomToPolinom(monom);
             }
         }
+        polinomScadere.checkZeros();
         return polinomScadere;
 
     }
@@ -53,6 +55,7 @@ public class Operatie {
                 polinomMultiplication.addMonomToPolinom(new Monom(coeficient, putere, "x"));
             }
         }
+        polinomMultiplication.checkZeros();
         return polinomMultiplication;
     }
     public static Polinom derivation(Polinom polinom) {
@@ -66,7 +69,7 @@ public class Operatie {
                 polinomDerivare.addMonomToPolinom(new Monom(entry.getValue().getCoeficient() * entry.getValue().getPower(), entry.getValue().getPower() -1, "x"));
             }
         }
-
+        polinom.checkZeros();
         return polinomDerivare;
     }
 

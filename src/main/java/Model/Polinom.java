@@ -34,6 +34,15 @@ public class Polinom {
         return polinom;
     }
 
+    public void checkZeros() {
+        for(Map.Entry<Integer, Monom> entry : polinom.entrySet()) {
+            if(entry.getValue().getCoeficient() == 0){
+                polinom.remove(entry.getKey());
+            }
+
+        }
+    }
+
     @Override
     public String toString() {
         StringBuilder buffer = new StringBuilder();
