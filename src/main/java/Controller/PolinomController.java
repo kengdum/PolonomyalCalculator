@@ -112,7 +112,14 @@ public class PolinomController implements ActionListener {
             int power = entry.getValue().getPower();
             if (coeficient > 0)
                 buffer.append("+");
+            if(power == 0) {
+                buffer.append(entry.getValue().getCoeficient());
+            }
+            if(coeficient != 1 && coeficient != -1) {
             buffer.append(entry.getValue().getCoeficient());
+            }
+            if(coeficient == -1)
+                buffer.append("-");
             if (power > 0) {
                 buffer.append(entry.getValue().getVariable());
             }
@@ -122,7 +129,6 @@ public class PolinomController implements ActionListener {
         }
         String polinomString = buffer.toString();
         polinomString = polinomString.replace(".0", "");
-        polinomString = polinomString.replace("1", "");
         return polinomString;
     }
 
@@ -132,7 +138,7 @@ public class PolinomController implements ActionListener {
         String operator = view.getOperator();
 
         switch (operator) {
-            case "+":
+            case "+" -> {
                 try {
                     Polinom polinom1 = new Polinom();
                     Polinom polinom2 = new Polinom();
@@ -143,8 +149,8 @@ public class PolinomController implements ActionListener {
                 } catch (InvalidInputException err) {
                     System.out.println(err.getMessage());
                 }
-                break;
-            case "-":
+            }
+            case "-" -> {
                 try {
                     Polinom polinom1 = new Polinom();
                     Polinom polinom2 = new Polinom();
@@ -154,8 +160,8 @@ public class PolinomController implements ActionListener {
                 } catch (InvalidInputException err) {
                     System.out.println(err.getMessage());
                 }
-                break;
-            case "*":
+            }
+            case "*" -> {
                 try {
                     Polinom polinom1 = new Polinom();
                     Polinom polinom2 = new Polinom();
@@ -166,8 +172,8 @@ public class PolinomController implements ActionListener {
                     System.out.println(err.getMessage());
 
                 }
-                break;
-            case "/":
+            }
+            case "/" -> {
                 try {
                     Polinom polinom1 = new Polinom();
                     Polinom polinom2 = new Polinom();
@@ -180,8 +186,8 @@ public class PolinomController implements ActionListener {
                     System.out.println(err.getMessage());
 
                 }
-                break;
-            case "Derivation":
+            }
+            case "Derivation" -> {
                 try {
                     Polinom polinom1 = new Polinom();
                     polinom1 = PolinomController.validateInput(input1);
@@ -189,8 +195,8 @@ public class PolinomController implements ActionListener {
                 } catch (InvalidInputException err) {
                     System.out.println(err.getMessage());
                 }
-                break;
-            case "Integration":
+            }
+            case "Integration" -> {
                 try {
                     Polinom polinom1 = new Polinom();
                     polinom1 = PolinomController.validateInput(input1);
@@ -198,7 +204,7 @@ public class PolinomController implements ActionListener {
                 } catch (InvalidInputException err) {
                     System.out.println(err.getMessage());
                 }
-                break;
+            }
         }
     }
 }

@@ -25,6 +25,7 @@ public class Operatie {
             }
         }
         polinomAdunare.checkZeros();
+        polinomAdunare.formatDecimals();
         return polinomAdunare;
     }
 
@@ -46,6 +47,7 @@ public class Operatie {
             }
         }
         polinomScadere.checkZeros();
+        polinomScadere.formatDecimals();
         return polinomScadere;
 
     }
@@ -59,6 +61,7 @@ public class Operatie {
             }
         }
         polinomMultiplication.checkZeros();
+        polinomMultiplication.formatDecimals();
         return polinomMultiplication;
     }
     public static Polinom derivation(Polinom polinom) {
@@ -102,7 +105,10 @@ public class Operatie {
             remainder = substraction(remainder, tempPolinomMultiplication);
 
         }
-
+        quotient.checkZeros();
+        quotient.formatDecimals();
+        remainder.checkZeros();
+        remainder.formatDecimals();
         Polinom[] result = {quotient , remainder};
         System.out.println(quotient);
         System.out.println(remainder);
