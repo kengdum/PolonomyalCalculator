@@ -5,13 +5,14 @@ import Model.Monom;
 import Model.Polinom;
 import View.PolinomView;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PolinomController {
-    private PolinomView view;
-    private Polinom model;
+    private final PolinomView view;
+    private final Polinom model;
 
     public PolinomController(PolinomView view, Polinom model) {
         this.view = view;
@@ -37,7 +38,6 @@ public class PolinomController {
             if (matcher.group().equals(matcher.group(4)))
                 throw new InvalidInputException("Inputul introdus de utilizator este invalid");
             String term = matcher.group();
-            System.out.println(term);
 
             term = term.replaceAll("\\s+", "");
             try {
@@ -47,8 +47,6 @@ public class PolinomController {
             }
             verificare = verificare + term;
         }
-        System.out.println(polynomial);
-        System.out.println(verificare);
         if (!verificare.equals(polynomial)) {
             throw new InvalidInputException("Inputul introdus de utlizator este invalid");
         }
@@ -56,29 +54,30 @@ public class PolinomController {
     }
 
     private static Monom parseStringToMonom(String polynomial, Matcher matcher) throws InvalidInputException {
-        int coeficient = 0;
+        double coeficient = 0;
         int power = 0;
-        if(polynomial.equals("1") || polynomial.equals("+1"))
-            return  new Monom(1,0,"x");
-        if(polynomial.equals("-1"))
-            return  new Monom(-1, 0, "x");
+        Monom monom = new Monom(coeficient, power, "x");
+        if (polynomial.equals("1") || polynomial.equals("+1"))
+            return new Monom(1, 0, "x");
+        if (polynomial.equals("-1"))
+            return new Monom(-1, 0, "x");
         if (polynomial.equals("+x") || polynomial.equals("x")) {
             return new Monom(1, 1, "x");
-        }
-        else if(polynomial.equals("-x")) {
-            return  new Monom(-1,1,"x");
+        } else if (polynomial.equals("-x")) {
+            return new Monom(-1, 1, "x");
         }
         if (polynomial.equals(matcher.group(1))) {
             String[] parts = polynomial.split("x\\^");
+            System.out.println(Arrays.toString(parts));
             if (parts.length == 2) {
-                if (parts[0].equals("")) {
+                if (parts[0].equals("") || parts[0].equals("1") || parts[0].equals("+")) {
                     coeficient = 1;
                     power = Integer.parseInt(parts[1]);
-                } else if (parts[0].equals("-1")) {
+                } else if (parts[0].equals("-1") || parts[0].equals("-")) {
                     coeficient = -1;
                     power = Integer.parseInt(parts[1]);
                 } else {
-                    coeficient = Integer.parseInt(parts[0]);
+                    coeficient = Double.parseDouble(parts[0]);
                     power = Integer.parseInt(parts[1]);
                 }
             }
@@ -86,55 +85,38 @@ public class PolinomController {
         } else if (polynomial.equals(matcher.group(2))) {
             String[] parts = polynomial.split("x");
             if (parts.length == 1) {
-                coeficient = Integer.parseInt(parts[0]);
+                coeficient = Double.parseDouble(parts[0]);
                 power = 1;
                 return new Monom(coeficient, power, "x");
             }
         } else {
-            coeficient = Integer.parseInt(polynomial);
+            coeficient = Double.parseDouble(polynomial);
             return new Monom(coeficient, power, "x");
         }
         throw new InvalidInputException("Eroare cand se incearca convertirea din string in monom");
     }
-
     public static String parsePolinomToString(Polinom polinom) {
         StringBuilder buffer = new StringBuilder();
-        if(polinom.getPolinom().isEmpty()){
+        if (polinom.getPolinom().isEmpty()) {
             buffer.append("0");
             return buffer.toString();
         }
         for (Map.Entry<Integer, Monom> entry : polinom.getPolinom().entrySet()) {
-            if(entry.getValue().getCoeficient() == 1 && entry.getValue().getPower() == 0){
-                buffer.append("+1");
+            double coeficient = entry.getValue().getCoeficient();
+            int power = entry.getValue().getPower();
+            if (coeficient > 0)
+                buffer.append("+");
+            buffer.append(entry.getValue().getCoeficient());
+            if (power > 0) {
+                buffer.append(entry.getValue().getVariable());
             }
-            if(entry.getValue().getCoeficient() == -1 && entry.getValue().getPower() == 0){
-                buffer.append("-1");
-            }
-            if (entry.getValue().getCoeficient() > 1) {
-                if(entry.getValue().getPower() > 0) {
-                    buffer.append("+").append(entry.getValue().getCoeficient()).append(entry.getValue().getVariable());
-                }
-                else {
-                    buffer.append("+").append(entry.getValue().getCoeficient());
-                }
-            } else if (entry.getValue().getCoeficient() < 1) {
-                if (entry.getValue().getCoeficient() != -1) {
-                    buffer.append(entry.getValue().getCoeficient()).append(entry.getValue().getVariable());
-                } else {
-                    if(entry.getValue().getPower() > 1){
-                        buffer.append("-").append(entry.getValue().getVariable());
-                    }
-
-                }
-
-            } else if (entry.getValue().getCoeficient() == 1 && entry.getValue().getPower() > 0) {
-                buffer.append("+").append(entry.getValue().getVariable());
-            }
-            if (entry.getValue().getPower() > 1) {
+            if (power > 1) {
                 buffer.append("^").append(entry.getValue().getPower());
             }
         }
-        return buffer.toString();
+        String polinomString = buffer.toString();
+        polinomString = polinomString.replace(".0","");
+        polinomString = polinomString.replace("1","");
+        return polinomString;
     }
-
 }

@@ -19,7 +19,16 @@ public class Polinom {
 
         }
     }
-
+    public int getHighestPower(){
+        return polinom.lastEntry().getValue().getPower();
+    }
+    public int getNumberOfMonoms() {
+        int contour = 0;
+        for(Map.Entry<Integer,Monom> entry : polinom.entrySet()) {
+            contour ++;
+        }
+        return  contour;
+    }
     public void addMonomToPolinom(Monom monom) {
         if(!polinom.containsKey(monom.getPower())) {
             polinom.put(monom.getPower(), monom);

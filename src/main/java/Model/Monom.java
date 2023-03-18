@@ -1,16 +1,30 @@
 package Model;
 
+import java.text.DecimalFormat;
+
 public class Monom {
-    private int coeficient;
+    private double coeficient;
     private int power;
     private String variable;
 
-    public Monom(int coeficient, int power, String variable) {
+    public Monom(double coeficient, int power, String variable) {
         this.coeficient = coeficient;
         this.power = power;
         this.variable = variable;
     }
-    public int getCoeficient() {
+    public void setDecimals(){
+        int myInt = (int) this.coeficient;
+        if(myInt == this.coeficient){
+            this.coeficient = myInt;
+            System.out.println(this.coeficient);
+        }
+        else{
+            DecimalFormat df = new DecimalFormat("#.##");
+            setCoeficient(Double.parseDouble(df.format(coeficient)));
+        }
+
+    }
+    public double getCoeficient() {
         return coeficient;
     }
 
@@ -22,7 +36,7 @@ public class Monom {
         return variable;
     }
 
-    public void setCoeficient(int coeficient) {
+    public void setCoeficient(double coeficient) {
         this.coeficient = coeficient;
     }
 

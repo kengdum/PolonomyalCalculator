@@ -1,5 +1,8 @@
 package Model;
 
+import Exceptions.InvalidInputException;
+
+import javax.management.modelmbean.ModelMBeanOperationInfo;
 import java.util.Map;
 
 public class Operatie {
@@ -8,8 +11,8 @@ public class Operatie {
 
         for (Map.Entry<Integer, Monom> entry : polinom2.getPolinom().entrySet()) {
             if (polinom1.getPolinom().containsKey(entry.getKey())) {
-                int var1 = polinom1.getPolinom().get(entry.getKey()).getCoeficient();
-                int var2 = polinom2.getPolinom().get(entry.getKey()).getCoeficient();
+                double var1 = polinom1.getPolinom().get(entry.getKey()).getCoeficient();
+                double var2 = polinom2.getPolinom().get(entry.getKey()).getCoeficient();
                 if (var1 + var2 != 0) {
                     polinomAdunare.getPolinom().get(entry.getKey()).setCoeficient(var1 + var2);
                 } else {
@@ -30,8 +33,8 @@ public class Operatie {
 
         for (Map.Entry<Integer, Monom> entry : polinom2.getPolinom().entrySet()) {
             if (polinom1.getPolinom().containsKey(entry.getKey())) {
-                int var1 = polinom1.getPolinom().get(entry.getKey()).getCoeficient();
-                int var2 = polinom2.getPolinom().get(entry.getKey()).getCoeficient();
+                double var1 = polinom1.getPolinom().get(entry.getKey()).getCoeficient();
+                double var2 = polinom2.getPolinom().get(entry.getKey()).getCoeficient();
                 if (var1 - var2 != 0) {
                     polinomScadere.getPolinom().get(entry.getKey()).setCoeficient(var1 - var2);
                 } else {
@@ -50,7 +53,7 @@ public class Operatie {
         Polinom polinomMultiplication = new Polinom();
         for (Map.Entry<Integer, Monom> entry1 : polinom1.getPolinom().entrySet()) {
             for (Map.Entry<Integer, Monom> entry2 : polinom2.getPolinom().entrySet()) {
-                int coeficient = entry1.getValue().getCoeficient() * entry2.getValue().getCoeficient();
+                double coeficient = entry1.getValue().getCoeficient() * entry2.getValue().getCoeficient();
                 int putere = entry1.getValue().getPower() + entry2.getValue().getPower();
                 polinomMultiplication.addMonomToPolinom(new Monom(coeficient, putere, "x"));
             }
@@ -71,6 +74,37 @@ public class Operatie {
         }
         polinom.checkZeros();
         return polinomDerivare;
+    }
+    public static Polinom integration(Polinom polinom){
+        Polinom polinomIntegrare = new Polinom();
+        for(Map.Entry<Integer,Monom> entry : polinom.getPolinom().entrySet()){
+            double coeficient = entry.getValue().getCoeficient() / (entry.getValue().getPower() + 1);
+            int power = entry.getValue().getPower() + 1;
+            polinomIntegrare.addMonomToPolinom(new Monom(coeficient,power,"x"));
+        }
+        polinom.checkZeros();
+        return  polinomIntegrare;
+     }
+    public static Polinom[] division(Polinom polinom1, Polinom polinom2) {
+        Polinom quotient  = new Polinom();
+        Polinom remainder = new Polinom(polinom1);
+        while (remainder.getHighestPower()>= polinom2.getHighestPower()) {
+            double coeficient = remainder.getPolinom().get(remainder.getHighestPower()).getCoeficient() /
+                    polinom2.getPolinom().get(polinom2.getHighestPower()).getCoeficient();
+            int putere = remainder.getHighestPower() - polinom2.getHighestPower();
+            Polinom tempPolinom = new Polinom();
+            Monom term = new Monom(coeficient,putere,"x");
+            tempPolinom.addMonomToPolinom(term);
+            quotient .addMonomToPolinom(term);
+            Polinom tempPolinomMultiplication = multiplication(tempPolinom, polinom2);
+            remainder = substraction(remainder, tempPolinomMultiplication);
+
+        }
+
+        Polinom[] result = {quotient , remainder};
+        System.out.println(quotient);
+        System.out.println(remainder);
+        return result;
     }
 
 }
