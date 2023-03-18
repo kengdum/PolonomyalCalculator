@@ -19,8 +19,8 @@ public class Monom {
             System.out.println(this.coeficient);
         }
         else{
-            DecimalFormat df = new DecimalFormat("#.##");
-            setCoeficient(Double.parseDouble(df.format(coeficient)));
+            this.coeficient = Math.round(this.coeficient * 100.0) / 100.0;
+            System.out.println(this.coeficient);
         }
 
     }

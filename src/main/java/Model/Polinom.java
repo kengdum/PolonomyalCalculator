@@ -1,5 +1,7 @@
 package Model;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -21,13 +23,6 @@ public class Polinom {
     }
     public int getHighestPower(){
         return polinom.lastEntry().getValue().getPower();
-    }
-    public int getNumberOfMonoms() {
-        int contour = 0;
-        for(Map.Entry<Integer,Monom> entry : polinom.entrySet()) {
-            contour ++;
-        }
-        return  contour;
     }
     public void addMonomToPolinom(Monom monom) {
         if(!polinom.containsKey(monom.getPower())) {
@@ -51,7 +46,11 @@ public class Polinom {
 
         }
     }
-
+    public void formatDecimals() {
+        for (Map.Entry<Integer, Monom> entry : polinom.entrySet()) {
+            entry.getValue().setDecimals();
+        }
+    }
     @Override
     public String toString() {
         StringBuilder buffer = new StringBuilder();

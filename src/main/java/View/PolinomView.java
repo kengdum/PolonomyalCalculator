@@ -7,7 +7,7 @@ import Model.Polinom;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-public class PolinomView extends JFrame implements ActionListener {
+public class PolinomView extends JFrame {
     private JLabel inputLabel1, inputLabel2, resultLabel, operatorLabel, remainderLabel;
     private JTextField inputField1, inputField2, resultField, remainderField;
     private JComboBox operatorComboBox;
@@ -46,9 +46,7 @@ public class PolinomView extends JFrame implements ActionListener {
 
 
         calculateButton = new JButton("Calculate");
-        calculateButton.addActionListener(this);
 
-        // Add the components to the frame
         JPanel panel = new JPanel(new GridLayout(5, 2));
         panel.add(inputLabel1);
         panel.add(inputField1);
@@ -63,81 +61,24 @@ public class PolinomView extends JFrame implements ActionListener {
         add(panel, BorderLayout.CENTER);
         add(calculateButton, BorderLayout.SOUTH);
     }
+    public String getInput1(){
+        return  inputField1.getText();
+    }
+    public String getInput2(){
+        return  inputField2.getText();
+    }
+    public String getOperator(){
+        return (String) operatorComboBox.getSelectedItem();
+    }
+    public void addCalculateListener(ActionListener listener) {
+        calculateButton.addActionListener(listener);
+    }
 
-    public void actionPerformed(ActionEvent e) {
-        String input1 = inputField1.getText();
-        String input2 = inputField2.getText();
-        String operator = (String) operatorComboBox.getSelectedItem();
+    public JTextField getResultField() {
+        return resultField;
+    }
 
-        // Perform the selected arithmetic operation and display the result
-        switch (operator) {
-            case "+":
-                try {
-                    Polinom polinom1 = new Polinom();
-                    Polinom polinom2 = new Polinom();
-                    polinom1 = PolinomController.validateInput(input1);
-                    polinom2 = PolinomController.validateInput(input2);
-                    System.out.println(Operatie.addition(polinom1,polinom2));
-                    resultField.setText(PolinomController.parsePolinomToString(Operatie.addition(polinom1,polinom2)));
-                } catch (InvalidInputException err) {
-                   System.out.println(err.getMessage());
-                }
-                break;
-            case "-":
-                try {
-                    Polinom polinom1 = new Polinom();
-                    Polinom polinom2 = new Polinom();
-                    polinom1 = PolinomController.validateInput(input1);
-                    polinom2 = PolinomController.validateInput(input2);
-                    resultField.setText(PolinomController.parsePolinomToString(Operatie.substraction(polinom1,polinom2)));
-                } catch (InvalidInputException err) {
-                    System.out.println(err.getMessage());
-                }
-                break;
-            case "*":
-                try {
-                    Polinom polinom1 = new Polinom();
-                    Polinom polinom2 = new Polinom();
-                    polinom1 = PolinomController.validateInput(input1);
-                    polinom2 = PolinomController.validateInput(input2);
-                    resultField.setText(PolinomController.parsePolinomToString(Operatie.multiplication(polinom1,polinom2)));
-                }catch (InvalidInputException err){
-                    System.out.println(err.getMessage());
-
-                }
-                break;
-            case "/":
-                try {
-                    Polinom polinom1 = new Polinom();
-                    Polinom polinom2 = new Polinom();
-                    polinom1 = PolinomController.validateInput(input1);
-                    polinom2 = PolinomController.validateInput(input2);
-                    Polinom[] result = Operatie.division(polinom1,polinom2);
-                    resultField.setText(PolinomController.parsePolinomToString(result[0]));
-                    remainderField.setText(PolinomController.parsePolinomToString(result[1]));
-                }catch (InvalidInputException err){
-                    System.out.println(err.getMessage());
-
-                }
-                break;
-            case "Derivation":
-                try {
-                    Polinom polinom1 = new Polinom();
-                    polinom1 = PolinomController.validateInput(input1);
-                    resultField.setText(PolinomController.parsePolinomToString(Operatie.derivation(polinom1)));
-                } catch (InvalidInputException err) {
-                    System.out.println(err.getMessage());
-                }
-                break;
-            case "Integration":
-                try {
-                    Polinom polinom1 = new Polinom();
-                    polinom1 = PolinomController.validateInput(input1);
-                    resultField.setText(PolinomController.parsePolinomToString(Operatie.integration(polinom1)));
-                } catch (InvalidInputException err) {
-                    System.out.println(err.getMessage());
-                }
-                break;
-        }
+    public JTextField getRemainderField() {
+        return remainderField;
     }
 }

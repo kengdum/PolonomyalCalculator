@@ -41,7 +41,7 @@ public class Operatie {
                     polinomScadere.getPolinom().remove(entry.getKey());
                 }
             } else {
-                Monom monom = new Monom(entry.getValue().getCoeficient(), entry.getKey(), entry.getValue().getVariable());
+                Monom monom = new Monom(entry.getValue().getCoeficient() * -1, entry.getKey(), entry.getValue().getVariable());
                 polinomScadere.addMonomToPolinom(monom);
             }
         }
@@ -72,7 +72,8 @@ public class Operatie {
                 polinomDerivare.addMonomToPolinom(new Monom(entry.getValue().getCoeficient() * entry.getValue().getPower(), entry.getValue().getPower() -1, "x"));
             }
         }
-        polinom.checkZeros();
+        polinomDerivare.checkZeros();
+        polinomDerivare.formatDecimals();
         return polinomDerivare;
     }
     public static Polinom integration(Polinom polinom){
@@ -82,13 +83,14 @@ public class Operatie {
             int power = entry.getValue().getPower() + 1;
             polinomIntegrare.addMonomToPolinom(new Monom(coeficient,power,"x"));
         }
-        polinom.checkZeros();
+        polinomIntegrare.checkZeros();
+        polinomIntegrare.formatDecimals();
         return  polinomIntegrare;
      }
     public static Polinom[] division(Polinom polinom1, Polinom polinom2) {
         Polinom quotient  = new Polinom();
         Polinom remainder = new Polinom(polinom1);
-        while (remainder.getHighestPower()>= polinom2.getHighestPower()) {
+        while (!remainder.getPolinom().isEmpty() && remainder.getHighestPower()>= polinom2.getHighestPower()) {
             double coeficient = remainder.getPolinom().get(remainder.getHighestPower()).getCoeficient() /
                     polinom2.getPolinom().get(polinom2.getHighestPower()).getCoeficient();
             int putere = remainder.getHighestPower() - polinom2.getHighestPower();

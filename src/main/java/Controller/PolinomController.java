@@ -2,24 +2,29 @@ package Controller;
 
 import Exceptions.InvalidInputException;
 import Model.Monom;
+import Model.Operatie;
 import Model.Polinom;
 import View.PolinomView;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PolinomController {
+public class PolinomController implements ActionListener {
     private final PolinomView view;
-    private final Polinom model;
+    private final Operatie model;
 
-    public PolinomController(PolinomView view, Polinom model) {
+    public PolinomController(PolinomView view, Operatie model) {
         this.view = view;
         this.model = model;
+        view.setVisible(true);
+        this.view.addCalculateListener(this);
     }
 
-    public Polinom getModel() {
+    public Operatie getModel() {
         return model;
     }
 
@@ -95,6 +100,7 @@ public class PolinomController {
         }
         throw new InvalidInputException("Eroare cand se incearca convertirea din string in monom");
     }
+
     public static String parsePolinomToString(Polinom polinom) {
         StringBuilder buffer = new StringBuilder();
         if (polinom.getPolinom().isEmpty()) {
@@ -115,8 +121,84 @@ public class PolinomController {
             }
         }
         String polinomString = buffer.toString();
-        polinomString = polinomString.replace(".0","");
-        polinomString = polinomString.replace("1","");
+        polinomString = polinomString.replace(".0", "");
+        polinomString = polinomString.replace("1", "");
         return polinomString;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        String input1 = view.getInput1();
+        String input2 = view.getInput2();
+        String operator = view.getOperator();
+
+        switch (operator) {
+            case "+":
+                try {
+                    Polinom polinom1 = new Polinom();
+                    Polinom polinom2 = new Polinom();
+                    polinom1 = PolinomController.validateInput(input1);
+                    polinom2 = PolinomController.validateInput(input2);
+                    System.out.println(Operatie.addition(polinom1, polinom2));
+                    view.getResultField().setText(PolinomController.parsePolinomToString(Operatie.addition(polinom1, polinom2)));
+                } catch (InvalidInputException err) {
+                    System.out.println(err.getMessage());
+                }
+                break;
+            case "-":
+                try {
+                    Polinom polinom1 = new Polinom();
+                    Polinom polinom2 = new Polinom();
+                    polinom1 = PolinomController.validateInput(input1);
+                    polinom2 = PolinomController.validateInput(input2);
+                    view.getResultField().setText(PolinomController.parsePolinomToString(Operatie.substraction(polinom1, polinom2)));
+                } catch (InvalidInputException err) {
+                    System.out.println(err.getMessage());
+                }
+                break;
+            case "*":
+                try {
+                    Polinom polinom1 = new Polinom();
+                    Polinom polinom2 = new Polinom();
+                    polinom1 = PolinomController.validateInput(input1);
+                    polinom2 = PolinomController.validateInput(input2);
+                    view.getResultField().setText(PolinomController.parsePolinomToString(Operatie.multiplication(polinom1, polinom2)));
+                } catch (InvalidInputException err) {
+                    System.out.println(err.getMessage());
+
+                }
+                break;
+            case "/":
+                try {
+                    Polinom polinom1 = new Polinom();
+                    Polinom polinom2 = new Polinom();
+                    polinom1 = PolinomController.validateInput(input1);
+                    polinom2 = PolinomController.validateInput(input2);
+                    Polinom[] result = Operatie.division(polinom1, polinom2);
+                    view.getResultField().setText(PolinomController.parsePolinomToString(result[0]));
+                    view.getRemainderField().setText(PolinomController.parsePolinomToString(result[1]));
+                } catch (InvalidInputException err) {
+                    System.out.println(err.getMessage());
+
+                }
+                break;
+            case "Derivation":
+                try {
+                    Polinom polinom1 = new Polinom();
+                    polinom1 = PolinomController.validateInput(input1);
+                    view.getResultField().setText(PolinomController.parsePolinomToString(Operatie.derivation(polinom1)));
+                } catch (InvalidInputException err) {
+                    System.out.println(err.getMessage());
+                }
+                break;
+            case "Integration":
+                try {
+                    Polinom polinom1 = new Polinom();
+                    polinom1 = PolinomController.validateInput(input1);
+                    view.getResultField().setText(PolinomController.parsePolinomToString(Operatie.integration(polinom1)));
+                } catch (InvalidInputException err) {
+                    System.out.println(err.getMessage());
+                }
+                break;
+        }
     }
 }
