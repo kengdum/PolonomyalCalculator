@@ -13,12 +13,7 @@ public class Operatie {
             if (polinom1.getPolinom().containsKey(entry.getKey())) {
                 double var1 = polinom1.getPolinom().get(entry.getKey()).getCoeficient();
                 double var2 = polinom2.getPolinom().get(entry.getKey()).getCoeficient();
-                if (var1 + var2 != 0) {
-                    polinomAdunare.getPolinom().get(entry.getKey()).setCoeficient(var1 + var2);
-                } else {
-                    polinomAdunare.getPolinom().remove(entry.getKey());
-                }
-
+                polinomAdunare.getPolinom().get(entry.getKey()).setCoeficient(var1 + var2);
             } else {
                 Monom monom = new Monom(entry.getValue().getCoeficient(), entry.getKey(), entry.getValue().getVariable());
                 polinomAdunare.addMonomToPolinom(monom);
@@ -26,6 +21,7 @@ public class Operatie {
         }
         polinomAdunare.checkZeros();
         polinomAdunare.formatDecimals();
+        System.out.println(polinomAdunare);
         return polinomAdunare;
     }
 
