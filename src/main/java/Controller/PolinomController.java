@@ -156,7 +156,6 @@ public class PolinomController implements ActionListener {
             }
 
         }
-
         switch (operator) {
             case "+" -> {
                     view.getResultField().setText(PolinomController.parsePolinomToString(Operatie.addition(polinom1, polinom2)));

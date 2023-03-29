@@ -60,10 +60,9 @@ public class PolinomView extends JFrame {
         panel.add(remainderField);
         add(panel, BorderLayout.CENTER);
         add(calculateButton, BorderLayout.SOUTH);
+
     }
-    public String getInput1(){
-        return  inputField1.getText();
-    }
+    public String getInput1() { return inputField1.getText(); }
     public String getInput2(){
         return  inputField2.getText();
     }
